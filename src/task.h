@@ -6,18 +6,26 @@
 /*<-----    Task functions  ----->*/
 
 void samsCerealTask(void * parameter);
+void drillTask(void * parameter);
 
 /*<-----    Task handles    ----->*/
 
 extern TaskHandle_t samsCerealTaskHandle;
+extern TaskHandle_t drillTaskHandle;
+
+
 
 /*<-----    Task frequencies    ----->*/
 
 #define SAMS_CEREAL_FREQ 1
+#define DRILL_TASK_FREQ 100
+
+
 
 /*<-----    Task enables    ----->*/
 
 #define ENABLE_SAMS_CEREAL true
+#define ENABLE_DRILL_TASK true
 
 /*<-----    Shared variables    ----->*/
 
