@@ -7,11 +7,13 @@
 
 void samsCerealTask(void * parameter);
 void drillTask(void * parameter);
+void loadCellTask(void* parameter);
 
 /*<-----    Task handles    ----->*/
 
 extern TaskHandle_t samsCerealTaskHandle;
 extern TaskHandle_t drillTaskHandle;
+extern TaskHandle_t loadCellTaskHandle;
 
 
 
@@ -19,6 +21,7 @@ extern TaskHandle_t drillTaskHandle;
 
 #define SAMS_CEREAL_FREQ 1
 #define DRILL_TASK_FREQ 100
+#define LOADCELL_TASK_FREQ 10
 
 
 
@@ -26,8 +29,11 @@ extern TaskHandle_t drillTaskHandle;
 
 #define ENABLE_SAMS_CEREAL true
 #define ENABLE_DRILL_TASK true
+#define ENABLE_LOADCELL_TASK true
 
 /*<-----    Shared variables    ----->*/
+extern volatile float loadCellValues[3];
+
 
 /*<-----    Shared structs  ----->*/
 typedef enum MessageType {

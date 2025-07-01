@@ -24,6 +24,17 @@ void setup(){
         &drillTaskHandle             // Task handle
       );
     #endif
+
+    #if ENABLE_LOADCELL_TASK == true
+    xTaskCreate(
+        loadCellTask,    // Function that should be called
+        "Loadcell sampling task",   // Name of the task (for debugging)
+        4096,            // Stack size (bytes)
+        NULL,            // Parameter to pass
+        1,               // Task priority
+        &loadCellTaskHandle             // Task handle
+      );
+    #endif
     
 }
 
