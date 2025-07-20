@@ -36,7 +36,8 @@ Message parseMessage(String input){
         Serial.println(ping_out);
     }else if (key=="MOTOR"){
         output.type = MessageType::MOTOR;
-        output.motorValue = value.toInt();
+        output.motorValue = value.toFloat();
+        drill_speed = output.motorValue;
     }else{
         output.type = MessageType::ERROR;
         output.errorCode = 3; // Unknown key

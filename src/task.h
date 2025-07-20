@@ -29,13 +29,15 @@ extern TaskHandle_t loadCellTaskHandle;
 
 #define ENABLE_SAMS_CEREAL true
 #define ENABLE_DRILL_TASK true
-#define ENABLE_LOADCELL_TASK true
+#define ENABLE_LOADCELL_TASK false
 
 /*<-----    Shared variables    ----->*/
 extern volatile float loadCellValues[3];
+extern volatile float drill_speed;
 
 
 /*<-----    Shared structs  ----->*/
+
 typedef enum MessageType {
     PING_IN, 
     PING_OUT,
