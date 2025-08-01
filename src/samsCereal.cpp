@@ -37,8 +37,13 @@ Message parseMessage(String input){
     }else if (key=="MOTOR"){
         output.type = MessageType::MOTOR;
         output.motorValue = value.toFloat();
-        drill_speed = output.motorValue;
-    }else{
+        linearMotor.setVelocity(output.motorValue);
+    }else if (key=="LC"){
+        float masses[3];
+        getLoadCellValues(masses);
+        Serial.printf("<LC:%.2f,%.2f,%.2f>\n",masses[0],masses[1],masses[2]);
+    }
+    else{
         output.type = MessageType::ERROR;
         output.errorCode = 3; // Unknown key
     }
@@ -48,23 +53,34 @@ Message parseMessage(String input){
 
 
 
-void samsCerealTask(void * parameter){
+String inputBuffer = "";
 
+void samsCerealTask(void * parameter){
     Serial.begin(BAUD_RATE);
     Message incomingMessage;
 
-    for(;;){
-        String incoming;
-        if(Serial.available()>0){
-            incoming = Serial.readStringUntil('\n');
-            incomingMessage = parseMessage(incoming);
+    String inputBuffer = "";
 
-            if(incomingMessage.type==MessageType::ERROR){
-                Serial.print("Failed to parse message with code: ");
-                Serial.println(incomingMessage.errorCode);
+    for(;;){
+        while (Serial.available()) {
+            char c = Serial.read();
+
+            if (c == '\n') {
+                incomingMessage = parseMessage(inputBuffer);
+                inputBuffer = "";  // Clear buffer
+
+                if (incomingMessage.type == MessageType::ERROR) {
+                    Serial.print("Failed to parse message with code: ");
+                    Serial.println(incomingMessage.errorCode);
+                }
+            } else {
+                inputBuffer += c;
             }
         }
-        vTaskDelay((1000/SAMS_CEREAL_FREQ) / portTICK_PERIOD_MS);
+
+        // Periodic debug print
+        Serial.printf(">vel:%.2f\n>vel_setpoint:%.2f\n>pwm_val:%.2f\n", linearMotor.getVelocity(),linearMotor.target_velocity,linearMotor.pwm_in);
+
+        vTaskDelay(pdMS_TO_TICKS(1000 / SAMS_CEREAL_FREQ));
     }
 }
-

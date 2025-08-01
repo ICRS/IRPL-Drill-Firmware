@@ -1,7 +1,22 @@
 #include <task.h>
+SemaphoreHandle_t loadCellMutex;
+MotorTask linearMotor;
+MotorTask drillMotor;
 
 
 void setup(){
+  loadCellMutex = xSemaphoreCreateMutex();
+    if (loadCellMutex == NULL) {
+        Serial.println("❌ Failed to create mutex!");
+        while (true); // Stop execution
+    }
+
+    #if ENABLE_DRILL_TASK == true
+    linearMotor.begin(M1IA,M1IB,M1P,ENC1A,ENC1B,20,380);
+    linearMotor.setPID(1.0,0.2,0.05);
+    drillMotor.begin(M2IA,M2IB,M2P,ENC2A,ENC2B,20,380);
+    drillMotor.setPID(1,0,0);
+    #endif
 
     #if ENABLE_SAMS_CEREAL == true
     xTaskCreate(
@@ -14,16 +29,7 @@ void setup(){
       );
     #endif
 
-    #if ENABLE_DRILL_TASK == true
-    xTaskCreate(
-        drillTask,    // Function that should be called
-        "drill control loop",   // Name of the task (for debugging)
-        4096,            // Stack size (bytes)
-        NULL,            // Parameter to pass
-        1,               // Task priority
-        &drillTaskHandle             // Task handle
-      );
-    #endif
+
 
     #if ENABLE_LOADCELL_TASK == true
     xTaskCreate(
