@@ -24,6 +24,50 @@ void setup(){
         &drillTaskHandle             // Task handle
       );
     #endif
+
+    #if ENABLE_LINEAR_TASK == true
+    xTaskCreate(
+        linearTask,    // Function that should be called
+        "linear control loop",   // Name of the task (for debugging)
+        4096,            // Stack size (bytes)
+        NULL,            // Parameter to pass
+        1,               // Task priority
+        &linearTaskHandle             // Task handle
+      );
+    #endif
+
+    #if ENABLE_ENCODER_TASK == true
+    xTaskCreate(
+        encoderTask,     // Function that should be called
+        "encoder speed", // Name of the task (for debugging)
+        4096,            // Stack size (bytes)
+        NULL,            // Parameter to pass
+        1,               // Task priority
+        &encoderTaskHandle             // Task handle
+      );
+    #endif
+
+    #if ENABLE_PAYLOAD_TASK == true
+    xTaskCreate(
+        payloadTask,     // Function that should be called
+        "payload control loop", // Name of the task (for debugging)
+        4096,            // Stack size (bytes)
+        NULL,            // Parameter to pass
+        1,               // Task priority
+        &payloadTaskHandle             // Task handle
+      );
+    #endif
+
+    #if ENABLE_SERVO_TASK == true
+    xTaskCreate(
+        servoTask,     // Function that should be called
+        "servo control loop", // Name of the task (for debugging)
+        4096,            // Stack size (bytes)
+        NULL,            // Parameter to pass
+        1,               // Task priority
+        &servoTaskHandle             // Task handle
+      );
+    #endif
     
 }
 

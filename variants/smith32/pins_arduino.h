@@ -1,5 +1,5 @@
-#define SERVO1  1
-#define SERVO2  2
+#define SERVO1  2
+#define SERVO2  1
 #define ENC1A   3
 #define ENC1B   4
 #define ENC2A   5
@@ -10,9 +10,9 @@
 #define LC1CLK  11
 #define LC2DT   12
 #define LC2CLK  13
-#define M1P     33
-#define M1IA    34
-#define M1IB    35
-#define M2P     36
-#define M2IA    37
-#define M2IB    38
+#define M2P     33
+#define M2IA    34
+#define M2IB    35
+#define M1IB    36
+#define M1P     37
+#define M1IA    38
