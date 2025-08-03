@@ -48,6 +48,8 @@ typedef enum MessageType {
     PING_IN, 
     PING_OUT,
     ERROR,
+    LINEAR,
+    DRILL,
     MOTOR,
 };
  
@@ -57,6 +59,8 @@ struct Message {
     union {
         bool pingValue;     // PING_IN, PING_OUT
         int errorCode;      // ERROR
+        int linearValue;    // LINEAR
+        int drillValue;     // DRILL
         int motorValue;     // MOTOR
     };
 };

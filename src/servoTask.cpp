@@ -5,7 +5,7 @@ Servo payload_servo;
 Servo brush_servo;
 
 
-void drillTask(void * parameter){
+void servoTask(void * parameter){
     payload_servo.attach(SERVO1);
     brush_servo.attach(SERVO2);
 

@@ -34,16 +34,24 @@ Message parseMessage(String input){
         output.pingValue = (value=="true");
         String ping_out = "<PONG:"+ String(output.pingValue) +'>';
         Serial.println(ping_out);
-    }else if (key=="MOTOR"){
+    } else if (key=="MOTOR"){
         output.type = MessageType::MOTOR;
         output.motorValue = value.toFloat();
+        drillMotor.setVelocity(output.motorValue);
         linearMotor.setVelocity(output.motorValue);
-    }else if (key=="LC"){
+    } else if (key=="LINEAR"){
+        output.type = MessageType::LINEAR;
+        output.linearValue = value.toFloat();
+        linearMotor.setVelocity(output.linearValue);
+    } else if (key=="DRILL"){
+        output.type = MessageType::DRILL;
+        output.drillValue = value.toFloat();
+        drillMotor.setVelocity(output.drillValue);
+    } else if (key=="LC"){
         float masses[3];
         getLoadCellValues(masses);
         Serial.printf("<LC:%.2f,%.2f,%.2f>\n",masses[0],masses[1],masses[2]);
-    }
-    else{
+    } else {
         output.type = MessageType::ERROR;
         output.errorCode = 3; // Unknown key
     }
@@ -59,27 +67,19 @@ void samsCerealTask(void * parameter){
     Serial.begin(BAUD_RATE);
     Message incomingMessage;
 
-    String inputBuffer = "";
-
     for(;;){
-        while (Serial.available()) {
-            char c = Serial.read();
+        String incoming;
+        if(Serial.available()>0){
+            incoming = Serial.readStringUntil('\n');
+            incomingMessage = parseMessage(incoming);
 
-            if (c == '\n') {
-                incomingMessage = parseMessage(inputBuffer);
-                inputBuffer = "";  // Clear buffer
-
-                if (incomingMessage.type == MessageType::ERROR) {
-                    Serial.print("Failed to parse message with code: ");
-                    Serial.println(incomingMessage.errorCode);
-                }
-            } else {
-                inputBuffer += c;
+            if(incomingMessage.type==MessageType::ERROR){
+                Serial.print("Failed to parse message with code: ");
+                Serial.println(incomingMessage.errorCode);
             }
         }
-
         // Periodic debug print
-        Serial.printf(">vel:%.2f\n>vel_setpoint:%.2f\n>pwm_val:%.2f\n", linearMotor.getVelocity(),linearMotor.target_velocity,linearMotor.pwm_in);
+        Serial.printf(">vel:%.2f\n>vel_setpoint:%.2f\n>pwm_val:%.2f\n", drillMotor.getVelocity(),drillMotor.target_velocity,drillMotor.pwm_in);
 
         vTaskDelay(pdMS_TO_TICKS(1000 / SAMS_CEREAL_FREQ));
     }

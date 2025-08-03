@@ -14,8 +14,8 @@ void setup(){
     #if ENABLE_DRILL_TASK == true
     linearMotor.begin(M1IA,M1IB,M1P,ENC1A,ENC1B,20,380);
     linearMotor.setPID(1.0,0.2,0.05);
-    drillMotor.begin(M2IA,M2IB,M2P,ENC2A,ENC2B,20,380);
-    drillMotor.setPID(1,0,0);
+    drillMotor.begin(M2IA,M2IB,M2P,ENC2A,ENC2B,20,-3605);
+    drillMotor.setPID(1,0.1,0.05);
     #endif
 
     #if ENABLE_SAMS_CEREAL == true
