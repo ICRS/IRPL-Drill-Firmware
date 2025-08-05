@@ -23,6 +23,7 @@ bool MotorTask::begin(uint8_t in1, uint8_t in2, uint8_t en, uint8_t encA, uint8_
     this->taskFrequency = freq;
     pinMode(in1Pin, OUTPUT);
     pinMode(in2Pin, OUTPUT);
+    pinMode(LS1, INPUT);
     ledcAttachPin(enPin, 0); // Attach PWM to channel 0
     ledcSetup(0, 20000, 8);  // 20kHz PWM, 8-bit resolution
 
@@ -87,8 +88,8 @@ void MotorTask::taskFunction()
         pwm_in += pwm_change;
         // Set motor direction and power
         
-        if (target_velocity ==0.0)
-        {   
+        if (target_velocity ==0.0 || (digitalRead(LS1) == HIGH && pwm_in < 0))
+        {
             pwm_in = 0;
             digitalWrite(in1Pin, LOW);
             digitalWrite(in2Pin, LOW);

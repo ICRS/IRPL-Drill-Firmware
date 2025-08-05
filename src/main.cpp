@@ -41,6 +41,17 @@ void setup(){
         &loadCellTaskHandle             // Task handle
       );
     #endif
+
+    #if ENABLE_SERVO_TASK == true
+    xTaskCreate(
+        servoTask,    // Function that should be called
+        "Servo control task",   // Name of the task (for debugging)
+        4096,            // Stack size (bytes)
+        NULL,            // Parameter to pass
+        1,               // Task priority
+        &servoTaskHandle             // Task handle
+      );
+    #endif
     
 }
 

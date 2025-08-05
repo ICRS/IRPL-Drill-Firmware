@@ -39,6 +39,7 @@ extern SemaphoreHandle_t loadCellMutex;
 void getLoadCellValues(float *target_array);
 extern MotorTask drillMotor;
 extern MotorTask linearMotor; 
+extern volatile int payloadPos, brushPos;
 
 
 
@@ -51,6 +52,8 @@ typedef enum MessageType {
     LINEAR,
     DRILL,
     MOTOR,
+    PAYLOAD,
+    BRUSH
 };
  
 
@@ -62,6 +65,8 @@ struct Message {
         int linearValue;    // LINEAR
         int drillValue;     // DRILL
         int motorValue;     // MOTOR
+        int payloadValue;   // PAYLOAD
+        int brushValue;     // BRUSH
     };
 };
 

@@ -34,24 +34,39 @@ Message parseMessage(String input){
         output.pingValue = (value=="true");
         String ping_out = "<PONG:"+ String(output.pingValue) +'>';
         Serial.println(ping_out);
-    } else if (key=="MOTOR"){
+    }
+    else if (key=="MOTOR"){
         output.type = MessageType::MOTOR;
         output.motorValue = value.toFloat();
         drillMotor.setVelocity(output.motorValue);
         linearMotor.setVelocity(output.motorValue);
-    } else if (key=="LINEAR"){
+    }
+    else if (key=="LINEAR"){
         output.type = MessageType::LINEAR;
         output.linearValue = value.toFloat();
         linearMotor.setVelocity(output.linearValue);
-    } else if (key=="DRILL"){
+    }
+    else if (key=="DRILL"){
         output.type = MessageType::DRILL;
         output.drillValue = value.toFloat();
         drillMotor.setVelocity(output.drillValue);
-    } else if (key=="LC"){
+    }
+    else if (key=="LC"){
         float masses[3];
         getLoadCellValues(masses);
         Serial.printf("<LC:%.2f,%.2f,%.2f>\n",masses[0],masses[1],masses[2]);
-    } else {
+    }
+    else if (key=="PAYLOAD"){
+        output.type = MessageType::PAYLOAD;
+        output.payloadValue = value.toInt();
+        payloadPos = output.payloadValue;
+    }
+    else if (key=="BRUSH"){
+        output.type = MessageType::BRUSH;
+        output.brushValue = value.toInt();
+        brushPos = output.brushValue;
+    }
+    else {
         output.type = MessageType::ERROR;
         output.errorCode = 3; // Unknown key
     }
