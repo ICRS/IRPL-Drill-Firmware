@@ -12,7 +12,7 @@ bool MotorTask::setPID(float vel_kp, float vel_ki, float vel_kd){
     return true;
 }
 
-bool MotorTask::begin(uint8_t in1, uint8_t in2, uint8_t en, uint8_t encA, uint8_t encB, int16_t freq, int16_t cpr)
+bool MotorTask::begin(uint8_t in1, uint8_t in2, uint8_t en, uint8_t encA, uint8_t encB, int16_t freq, int16_t cpr, bool limit)
 {
     this->cpr = cpr;
     in1Pin = in1;
@@ -23,6 +23,9 @@ bool MotorTask::begin(uint8_t in1, uint8_t in2, uint8_t en, uint8_t encA, uint8_
     this->taskFrequency = freq;
     pinMode(in1Pin, OUTPUT);
     pinMode(in2Pin, OUTPUT);
+    if (limit) {
+        pinMode(LS1, INPUT_PULLUP);
+    }
     pinMode(LS1, INPUT);
     ledcAttachPin(enPin, 0); // Attach PWM to channel 0
     ledcSetup(0, 20000, 8);  // 20kHz PWM, 8-bit resolution
@@ -87,8 +90,15 @@ void MotorTask::taskFunction()
         velocityPID.Compute();
         pwm_in += pwm_change;
         // Set motor direction and power
-        
-        if (target_velocity ==0.0 || (digitalRead(LS1) == HIGH && pwm_in < 0))
+
+        if (limit && digitalRead(LS1) == HIGH) {
+            pwm_in = 0; // Stop if limit switch is pressed
+            digitalWrite(in1Pin, LOW);
+            digitalWrite(in2Pin, LOW);
+            analogWrite(enPin, 0);
+            encoder.setCount(0); // Reset encoder count
+        }
+        else if (target_velocity == 0.0)
         {
             pwm_in = 0;
             digitalWrite(in1Pin, LOW);

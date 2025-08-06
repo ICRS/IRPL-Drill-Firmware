@@ -9,12 +9,14 @@
 void samsCerealTask(void * parameter);
 void loadCellTask(void* parameter);
 void servoTask(void* parameter);
+void limitTask(void * parameter);
 
 /*<-----    Task handles    ----->*/
 
 extern TaskHandle_t samsCerealTaskHandle;
 extern TaskHandle_t loadCellTaskHandle;
 extern TaskHandle_t servoTaskHandle;
+extern TaskHandle_t limitTaskHandle;
 
 
 
@@ -23,6 +25,7 @@ extern TaskHandle_t servoTaskHandle;
 #define SAMS_CEREAL_FREQ 10
 #define LOADCELL_TASK_FREQ 10
 #define SERVO_TASK_FREQ 10
+#define LIMIT_TASK_FREQ 10
 
 
 
@@ -32,6 +35,7 @@ extern TaskHandle_t servoTaskHandle;
 #define ENABLE_LOADCELL_TASK true
 #define ENABLE_SERVO_TASK true
 #define ENABLE_DRILL_TASK true
+#define ENABLE_LIMIT_TASK true
 
 /*<-----    Shared variables    ----->*/
 extern volatile float loadCellValues[3];
@@ -40,6 +44,7 @@ void getLoadCellValues(float *target_array);
 extern MotorTask drillMotor;
 extern MotorTask linearMotor; 
 extern volatile int payloadPos, brushPos;
+extern volatile bool limitReached;
 
 
 
@@ -53,7 +58,8 @@ typedef enum MessageType {
     DRILL,
     MOTOR,
     PAYLOAD,
-    BRUSH
+    BRUSH,
+    LIMIT
 };
  
 

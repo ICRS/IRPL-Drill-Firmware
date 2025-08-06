@@ -12,9 +12,9 @@ void setup(){
     }
 
     #if ENABLE_DRILL_TASK == true
-    linearMotor.begin(M1IA,M1IB,M1P,ENC1A,ENC1B,20,380);
+    linearMotor.begin(M1IA,M1IB,M1P,ENC1A,ENC1B,20,380,1);
     linearMotor.setPID(1.0,0.2,0.05);
-    drillMotor.begin(M2IA,M2IB,M2P,ENC2A,ENC2B,20,-3605);
+    drillMotor.begin(M2IA,M2IB,M2P,ENC2A,ENC2B,20,-3605,0);
     drillMotor.setPID(1,0.1,0.05);
     #endif
 
@@ -52,7 +52,17 @@ void setup(){
         &servoTaskHandle             // Task handle
       );
     #endif
-    
+
+    #if ENABLE_LIMIT_TASK == true
+    xTaskCreate(
+        limitTask,    // Function that should be called
+        "Limit control task",   // Name of the task (for debugging)
+        4096,            // Stack size (bytes)
+        NULL,            // Parameter to pass
+        1,               // Task priority
+        &limitTaskHandle             // Task handle
+      );
+    #endif
 }
 
 void loop(){

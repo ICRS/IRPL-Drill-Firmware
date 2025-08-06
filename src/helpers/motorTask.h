@@ -20,7 +20,7 @@ private:
 public:
     MotorTask() {}
 
-    bool begin(uint8_t in1, uint8_t in2, uint8_t en, uint8_t encA, uint8_t encB, int16_t freq, int16_t cpr);
+    bool begin(uint8_t in1, uint8_t in2, uint8_t en, uint8_t encA, uint8_t encB, int16_t freq, int16_t cpr, bool limit=0);
 
     bool setPID(float vel_kp, float vel_ki, float vel_kd);
 
@@ -43,6 +43,7 @@ public:
     ESP32Encoder encoder;
     int16_t cpr;
     float pwm_change;
+    bool limit;
 };
 
 #endif

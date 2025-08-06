@@ -66,6 +66,9 @@ Message parseMessage(String input){
         output.brushValue = value.toInt();
         brushPos = output.brushValue;
     }
+    else if (key=="LIMIT"){
+        Serial.printf("%d\n", limitReached);
+    }
     else {
         output.type = MessageType::ERROR;
         output.errorCode = 3; // Unknown key
