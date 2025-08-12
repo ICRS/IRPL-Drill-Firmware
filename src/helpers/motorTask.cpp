@@ -24,9 +24,9 @@ bool MotorTask::begin(uint8_t in1, uint8_t in2, uint8_t en, uint8_t encA, uint8_
     pinMode(in1Pin, OUTPUT);
     pinMode(in2Pin, OUTPUT);
     if (limit) {
-        pinMode(LS1, INPUT_PULLUP);
+        pinMode(LS2, INPUT_PULLUP);
     }
-    pinMode(LS1, INPUT);
+    pinMode(LS2, INPUT);
     ledcAttachPin(enPin, 0); // Attach PWM to channel 0
     ledcSetup(0, 20000, 8);  // 20kHz PWM, 8-bit resolution
 
@@ -89,10 +89,12 @@ void MotorTask::taskFunction()
         // Compute new PWM using PID
         velocityPID.Compute();
         pwm_in += pwm_change;
+        pwm_in = constrain(pwm_in,-255,255);
         // Set motor direction and power
 
-        if (limit && digitalRead(LS1) == HIGH) {
+        if (digitalRead(LS2)) {
             pwm_in = 0; // Stop if limit switch is pressed
+            target_velocity = 0;
             digitalWrite(in1Pin, LOW);
             digitalWrite(in2Pin, LOW);
             analogWrite(enPin, 0);

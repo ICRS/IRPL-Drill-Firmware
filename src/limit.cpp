@@ -6,19 +6,14 @@ volatile bool limitReached = false;
 
 void limitTask(void * parameter) {
     // Initialize limit switch pins
-    pinMode(LS1, INPUT_PULLUP);
+    pinMode(LS2, INPUT_PULLUP);
 
     const TickType_t xPeriod = pdMS_TO_TICKS(1000 / LIMIT_TASK_FREQ);
     TickType_t xLastWakeTime = xTaskGetTickCount();
     
     for (;;) {
         // Check the state of the limit switch
-        if (digitalRead(LS1) == 1){
-            limitReached = true;
-        }
-        else {
-            limitReached = false;
-        }
+        limitReached = digitalRead(LS2);
 
         xTaskDelayUntil(&xLastWakeTime, xPeriod);
     }
