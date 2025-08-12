@@ -97,8 +97,7 @@ void samsCerealTask(void * parameter){
             }
         }
         // Periodic debug print
-        //Serial.printf(">vel:%.2f\n>vel_setpoint:%.2f\n>pwm_val:%.2f\n", linearMotor.getVelocity(),linearMotor.target_velocity,linearMotor.pwm_in);
-
+        Serial.printf("<POS:%.2f>\n",linearMotor.getPosition());
         vTaskDelay(pdMS_TO_TICKS(1000 / SAMS_CEREAL_FREQ));
     }
 }
