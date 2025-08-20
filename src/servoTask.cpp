@@ -5,7 +5,7 @@ Servo payload_servo;
 Servo brush_servo;
 
 volatile int payloadPos = 180; // Default value for payload servo
-volatile int brushPos = 25;   // 25 to stop, <25 CW, >25 ACW
+volatile int brushPos = 90;   // 25 to stop, <25 CW, >25 ACW
 
 
 void servoTask(void * parameter){
