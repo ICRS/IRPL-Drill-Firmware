@@ -61,7 +61,6 @@ typedef enum {
     BRUSH,
     LIMIT
 } MessageType;
- 
 
 struct Message {
     MessageType type;
@@ -75,5 +74,11 @@ struct Message {
         int brushValue;     // BRUSH
     };
 };
+
+
+/*<-----  Macros  ----->*/
+
+#define MAX_EXTENSION 540.0 /* Maximum extenion of the drill in mm */
+
 
 #endif

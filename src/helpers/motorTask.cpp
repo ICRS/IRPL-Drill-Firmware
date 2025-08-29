@@ -44,6 +44,7 @@ bool MotorTask::begin(uint8_t in1, uint8_t in2, uint8_t en, uint8_t encA, uint8_
     velocityPID.SetOutputLimits(-255, 255);
     velocityPID.SetMode(QuickPID::Control::automatic);
     velocityPID.SetSampleTimeUs(FREQ_TO_US_PERIOD(taskFrequency));
+    velocityPID.SetAntiWindupMode(QuickPID::iAwMode::iAwClamp);
 
     // Start task
     xTaskCreate(
@@ -94,6 +95,8 @@ void MotorTask::taskFunction()
         pwm_in += pwm_change;
         pwm_in = constrain(pwm_in, -255, 255);
         // Set motor direction and power
+        
+        Serial.printf("pwm_in = %.2f\n", pwm_in);
 
         if (digitalRead(LS2))
         {

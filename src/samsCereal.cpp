@@ -87,16 +87,20 @@ void samsCerealTask(void * parameter){
 
     for(;;){
         String incoming;
-        if(Serial.available()>0){
+        if (Serial.available() > 0){
             incoming = Serial.readStringUntil('\n');
             incomingMessage = parseMessage(incoming);
 
-            if(incomingMessage.type==MessageType::ERROR){
+            if (incomingMessage.type == MessageType::ERROR){
                 Serial.printf("Failed to parse message with code: %i\n", incomingMessage.errorCode);
+                Serial.printf("Message that caused error = '%s'\n", incoming);
             }
         }
-        // Periodic debug print
-        Serial.printf("<POS:%.2f>\n",linearMotor.getPosition());
+
+        /* Periodic position check. Stop moving down if at the maximum extension */
+        float drill_position = linearMotor.getPosition();
+        if (drill_position >= MAX_EXTENSION) linearMotor.setVelocity(0.0);
+        Serial.printf("<POS:%.2f>\n", drill_position);
         vTaskDelay(pdMS_TO_TICKS(1000 / SAMS_CEREAL_FREQ));
     }
 }
