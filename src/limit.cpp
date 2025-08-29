@@ -14,7 +14,7 @@ void limitTask(void * parameter) {
     for (;;) {
         // Check the state of the limit switch
         limitReached = digitalRead(LS2);
-        Serial.printf("<LIMIT:%d>\n",limitReached);
+        // Serial.printf("<LIMIT:%d>\n",limitReached);
         xTaskDelayUntil(&xLastWakeTime, xPeriod);
     }
 }

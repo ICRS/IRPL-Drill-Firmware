@@ -56,6 +56,12 @@ Message parseMessage(String input){
         getLoadCellValues(masses);
         Serial.printf("<LC:%.2f,%.2f,%.2f>\n",masses[0],masses[1],masses[2]);
     }
+    else if (key=="CALIB"){
+        output.type = MessageType::CALIB;
+        output.calibValue = value.toInt();
+        calibrateLoadCell(output.calibValue);
+
+    }
     else if (key=="PAYLOAD"){
         output.type = MessageType::PAYLOAD;
         output.payloadValue = value.toInt();
@@ -97,7 +103,7 @@ void samsCerealTask(void * parameter){
             }
         }
         // Periodic debug print
-        Serial.printf("<POS:%.2f>\n",linearMotor.getPosition());
+        // Serial.printf("<POS:%.2f>\n",linearMotor.getPosition());
         vTaskDelay(pdMS_TO_TICKS(1000 / SAMS_CEREAL_FREQ));
     }
 }

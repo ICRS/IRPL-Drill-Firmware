@@ -23,7 +23,7 @@ extern TaskHandle_t limitTaskHandle;
 /*<-----    Task frequencies    ----->*/
 
 #define SAMS_CEREAL_FREQ 10
-#define LOADCELL_TASK_FREQ 10
+#define LOADCELL_TASK_FREQ 1
 #define SERVO_TASK_FREQ 10
 #define LIMIT_TASK_FREQ 10
 
@@ -33,9 +33,9 @@ extern TaskHandle_t limitTaskHandle;
 
 #define ENABLE_SAMS_CEREAL true
 #define ENABLE_LOADCELL_TASK true
-#define ENABLE_SERVO_TASK true
+#define ENABLE_SERVO_TASK false
 #define ENABLE_DRILL_TASK true
-#define ENABLE_LIMIT_TASK true
+#define ENABLE_LIMIT_TASK false
 
 /*<-----    Shared variables    ----->*/
 extern volatile float loadCellValues[3];
@@ -45,7 +45,7 @@ extern MotorTask drillMotor;
 extern MotorTask linearMotor; 
 extern volatile int payloadPos, brushPos;
 extern volatile bool limitReached;
-
+void calibrateLoadCell(int lc_num);
 
 
 /*<-----    Shared structs  ----->*/
@@ -59,7 +59,8 @@ typedef enum MessageType {
     MOTOR,
     PAYLOAD,
     BRUSH,
-    LIMIT
+    LIMIT,
+    CALIB
 };
  
 
@@ -73,6 +74,7 @@ struct Message {
         int motorValue;     // MOTOR
         int payloadValue;   // PAYLOAD
         int brushValue;     // BRUSH
+        int calibValue;    // CALIB
     };
 };
 
