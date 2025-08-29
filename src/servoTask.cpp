@@ -11,9 +11,9 @@ void inchPayload(int direction){
     payload_servo.write(90);
     payloadPos = 90;
     if (direction > 0) {
-        payloadPos = 110;
-        vTaskDelay(pdMS_TO_TICKS(200));
-        payload_servo.write(90);
+        payloadPos = 100;
+        vTaskDelay(pdMS_TO_TICKS(300));
+        payloadPos = 90;
 
     } 
     else {
