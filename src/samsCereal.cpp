@@ -59,7 +59,10 @@ Message parseMessage(String input){
     else if (key=="PAYLOAD"){
         output.type = MessageType::PAYLOAD;
         output.payloadValue = value.toInt();
-        payloadPos = output.payloadValue;
+        for (int i = 0; i < 15; ++i){
+            inchPayload(output.payloadValue);
+            vTaskDelay(pdMS_TO_TICKS(200));
+        }
     }
     else if (key=="INCHPAY"){
         output.type = MessageType::INCHPAY;
