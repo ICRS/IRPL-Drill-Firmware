@@ -92,8 +92,7 @@ void samsCerealTask(void * parameter){
             incomingMessage = parseMessage(incoming);
 
             if(incomingMessage.type==MessageType::ERROR){
-                Serial.print("Failed to parse message with code: ");
-                Serial.println(incomingMessage.errorCode);
+                Serial.printf("Failed to parse message with code: %i\n", incomingMessage.errorCode);
             }
         }
         // Periodic debug print

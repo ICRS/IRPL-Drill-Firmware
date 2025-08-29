@@ -50,7 +50,7 @@ extern volatile bool limitReached;
 
 /*<-----    Shared structs  ----->*/
 
-typedef enum MessageType {
+typedef enum {
     PING_IN, 
     PING_OUT,
     ERROR,
@@ -60,7 +60,7 @@ typedef enum MessageType {
     PAYLOAD,
     BRUSH,
     LIMIT
-};
+} MessageType;
  
 
 struct Message {
