@@ -61,6 +61,11 @@ Message parseMessage(String input){
         output.payloadValue = value.toInt();
         payloadPos = output.payloadValue;
     }
+    else if (key=="INCHPAY"){
+        output.type = MessageType::INCHPAY;
+        output.inchpayValue = value.toInt();
+        inchPayload(output.inchpayValue);
+    }
     else if (key=="BRUSH"){
         output.type = MessageType::BRUSH;
         output.brushValue = value.toInt();

@@ -45,6 +45,7 @@ extern MotorTask drillMotor;
 extern MotorTask linearMotor; 
 extern volatile int payloadPos, brushPos;
 extern volatile bool limitReached;
+void inchPayload(int direction);
 
 
 
@@ -59,7 +60,8 @@ typedef enum {
     MOTOR,
     PAYLOAD,
     BRUSH,
-    LIMIT
+    LIMIT,
+    INCHPAY
 } MessageType;
 
 struct Message {
@@ -72,6 +74,7 @@ struct Message {
         int motorValue;     // MOTOR
         int payloadValue;   // PAYLOAD
         int brushValue;     // BRUSH
+        int inchpayValue;  // INCHPAY
     };
 };
 
