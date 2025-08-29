@@ -16,11 +16,12 @@ private:
     uint8_t enPin;
     uint8_t encA;
     uint8_t encB;
+    uint8_t instance;
 
 public:
     MotorTask() {}
 
-    bool begin(uint8_t in1, uint8_t in2, uint8_t en, uint8_t encA, uint8_t encB, int16_t freq, int16_t cpr, bool limit=0);
+    bool begin(uint8_t in1, uint8_t in2, uint8_t en, uint8_t encA, uint8_t encB, int16_t freq, int16_t cpr, bool limit=0, uint8_t instance = 0);
 
     bool setPID(float vel_kp, float vel_ki, float vel_kd);
 
@@ -35,7 +36,7 @@ public:
     QuickPID velocityPID;
     float pwm_in;
 
-// private:
+    // private:
     TaskHandle_t task_handle_;
     int16_t taskFrequency;
     float current_velocity;

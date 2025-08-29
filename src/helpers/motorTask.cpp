@@ -14,7 +14,7 @@ bool MotorTask::setPID(float vel_kp, float vel_ki, float vel_kd)
     return true;
 }
 
-bool MotorTask::begin(uint8_t in1, uint8_t in2, uint8_t en, uint8_t encA, uint8_t encB, int16_t freq, int16_t cpr, bool limit)
+bool MotorTask::begin(uint8_t in1, uint8_t in2, uint8_t en, uint8_t encA, uint8_t encB, int16_t freq, int16_t cpr, bool limit, uint8_t instance)
 {
     this->cpr = cpr;
     in1Pin = in1;
@@ -23,6 +23,7 @@ bool MotorTask::begin(uint8_t in1, uint8_t in2, uint8_t en, uint8_t encA, uint8_
     this->encA = encA;
     this->encB = encB;
     this->taskFrequency = freq;
+    this->instance = instance;
     pinMode(in1Pin, OUTPUT);
     pinMode(in2Pin, OUTPUT);
     if (limit)
@@ -79,6 +80,9 @@ void MotorTask::taskFunction()
     float last_count = 0;
     TickType_t last_wake = xTaskGetTickCount();
 
+    int previous_limit;
+    int current_limit;
+
     while (true)
     {
         // Wait for the PID sample time
@@ -95,11 +99,10 @@ void MotorTask::taskFunction()
         pwm_in += pwm_change;
         pwm_in = constrain(pwm_in, -255, 255);
         // Set motor direction and power
-        
-        Serial.printf("pwm_in = %.2f\n", pwm_in);
 
-        if (digitalRead(LS2))
-        {
+        current_limit = digitalRead(LS2);
+        if (!previous_limit && current_limit){
+
             // Stop if limit switch is pressed
             if (target_velocity < 0)
             {
@@ -108,6 +111,8 @@ void MotorTask::taskFunction()
             }
             encoder.setCount(0); // Reset encoder count
         }
+        previous_limit = current_limit;
+
         if (target_velocity == 0.0)
         {
             pwm_in = 0;
