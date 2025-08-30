@@ -7,16 +7,16 @@ Servo brush_servo;
 volatile int payloadPos = 180; // Default value for payload servo
 volatile int brushPos = 90;   // 25 to stop, <25 CW, >25 ACW
 
-void inchPayload(int direction){
+void inchPayload(int direction, int speed){
     payloadPos = 90;
     if (direction > 0) {
-        payloadPos = 110;
+        payloadPos = 90+speed;
         vTaskDelay(pdMS_TO_TICKS(100));
         payloadPos = 90;
 
     } 
     else {
-        payloadPos = 70;
+        payloadPos = 90-speed;
         vTaskDelay(pdMS_TO_TICKS(100));
         payloadPos = 90;
     }

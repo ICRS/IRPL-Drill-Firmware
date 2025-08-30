@@ -45,7 +45,7 @@ extern MotorTask drillMotor;
 extern MotorTask linearMotor; 
 extern volatile int payloadPos, brushPos;
 extern volatile bool limitReached;
-void inchPayload(int direction);
+void inchPayload(int direction, int step_size);
 
 
 

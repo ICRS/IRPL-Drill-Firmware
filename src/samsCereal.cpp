@@ -59,15 +59,15 @@ Message parseMessage(String input){
     else if (key=="PAYLOAD"){
         output.type = MessageType::PAYLOAD;
         output.payloadValue = value.toInt();
-        for (int i = 0; i < 15; ++i){
-            inchPayload(output.payloadValue);
-            vTaskDelay(pdMS_TO_TICKS(200));
+        for (int i = 0; i < 11; ++i){
+            inchPayload(output.payloadValue, 40);
+            vTaskDelay(pdMS_TO_TICKS(300));
         }
     }
     else if (key=="INCHPAY"){
         output.type = MessageType::INCHPAY;
         output.inchpayValue = value.toInt();
-        inchPayload(output.inchpayValue);
+        inchPayload(output.inchpayValue, 20);
     }
     else if (key=="BRUSH"){
         output.type = MessageType::BRUSH;

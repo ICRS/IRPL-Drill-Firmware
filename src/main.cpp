@@ -14,7 +14,7 @@ void setup(){
     #if ENABLE_DRILL_TASK == true
     linearMotor.begin(M1IA,M1IB,M1P,ENC1A,ENC1B,20,380,1,0);
     linearMotor.setPID(0.5,0.2,0.05);
-    drillMotor.begin(M2IA,M2IB,M2P,ENC2A,ENC2B,20,-3605,0,1);
+    drillMotor.begin(M2IB,M2IA,M2P,ENC2A,ENC2B,20,-3605,0,1);
     drillMotor.setPID(1,0.1,0.05);
     #endif
 
