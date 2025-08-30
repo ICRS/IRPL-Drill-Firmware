@@ -11,8 +11,8 @@
 #define LC2DT   12
 #define LC2CLK  13
 #define M1P     33
-#define M1IA    34
-#define M1IB    35
+#define M1IA    35
+#define M1IB    34
 #define M2P     36
 #define M2IA    37
 #define M2IB    38

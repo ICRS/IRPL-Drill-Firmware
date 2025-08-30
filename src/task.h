@@ -2,7 +2,7 @@
 #define TASK_H
 
 #include <Arduino.h>
-#include "helpers/motorTask.h"
+#include "ESP32Encoder.h"
 
 /*<-----    Task functions  ----->*/
 
@@ -10,6 +10,8 @@ void samsCerealTask(void * parameter);
 void loadCellTask(void* parameter);
 void servoTask(void* parameter);
 void limitTask(void * parameter);
+void drillTask(void * parameter);
+void linearTask(void * parameter);
 
 /*<-----    Task handles    ----->*/
 
@@ -17,7 +19,8 @@ extern TaskHandle_t samsCerealTaskHandle;
 extern TaskHandle_t loadCellTaskHandle;
 extern TaskHandle_t servoTaskHandle;
 extern TaskHandle_t limitTaskHandle;
-
+extern TaskHandle_t drillTaskHandle;
+extern TaskHandle_t linearTaskHandle;
 
 
 /*<-----    Task frequencies    ----->*/
@@ -26,7 +29,8 @@ extern TaskHandle_t limitTaskHandle;
 #define LOADCELL_TASK_FREQ 10
 #define SERVO_TASK_FREQ 10
 #define LIMIT_TASK_FREQ 10
-
+#define DRILL_TASK_FREQ 20
+#define LINEAR_TASK_FREQ 20
 
 
 /*<-----    Task enables    ----->*/
@@ -35,19 +39,19 @@ extern TaskHandle_t limitTaskHandle;
 #define ENABLE_LOADCELL_TASK true
 #define ENABLE_SERVO_TASK true
 #define ENABLE_DRILL_TASK true
-#define ENABLE_LIMIT_TASK true
+#define ENABLE_LINEAR_TASK true
+#define ENABLE_LIMIT_TASK false
 
 /*<-----    Shared variables    ----->*/
 extern volatile float loadCellValues[3];
 extern SemaphoreHandle_t loadCellMutex;
 void getLoadCellValues(float *target_array);
-extern MotorTask drillMotor;
-extern MotorTask linearMotor; 
 extern volatile int payloadPos, brushPos;
 extern volatile bool limitReached;
 void inchPayload(int direction, int step_size);
-
-
+extern volatile float drill_target_velocity;
+extern volatile float linear_target_velocity;
+extern ESP32Encoder linear_encoder;
 
 /*<-----    Shared structs  ----->*/
 

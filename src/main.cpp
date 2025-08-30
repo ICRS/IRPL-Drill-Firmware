@@ -1,7 +1,5 @@
 #include <task.h>
 SemaphoreHandle_t loadCellMutex;
-MotorTask linearMotor;
-MotorTask drillMotor;
 
 
 void setup(){
@@ -11,11 +9,33 @@ void setup(){
         while (true); // Stop execution
     }
 
+    // #if ENABLE_DRILL_TASK == true
+    // linearMotor.begin(M1IA,M1IB,M1P,ENC1A,ENC1B,20,380,1,0);
+    // linearMotor.setPID(0.5,0.2,0.05);
+    // drillMotor.begin(M2IB,M2IA,M2P,ENC2A,ENC2B,20,-3605,0,1);
+    // drillMotor.setPID(1,0.1,0.05);
+    // #endif
+    
     #if ENABLE_DRILL_TASK == true
-    linearMotor.begin(M1IA,M1IB,M1P,ENC1A,ENC1B,20,380,1,0);
-    linearMotor.setPID(0.5,0.2,0.05);
-    drillMotor.begin(M2IB,M2IA,M2P,ENC2A,ENC2B,20,-3605,0,1);
-    drillMotor.setPID(1,0.1,0.05);
+    xTaskCreate(
+        drillTask,       // Function that should be called
+        "Drill task",    // Name of the task (for debugging)
+        4096,        // Stack size (bytes)
+        NULL,            // Parameter to pass
+        1,               // Task priority
+        &drillTaskHandle // Tt5ask handle
+    );
+    #endif
+
+    #if ENABLE_LINEAR_TASK == true
+        xTaskCreate(
+        linearTask,       // Function that should be called
+        "Linear task",    // Name of the task (for debugging)
+        4096,            // Stack size (bytes)
+        NULL,            // Parameter to pass
+        1,               // Task priority
+        &linearTaskHandle // Task handle
+      );
     #endif
 
     #if ENABLE_SAMS_CEREAL == true
@@ -28,8 +48,6 @@ void setup(){
         &samsCerealTaskHandle             // Task handle
       );
     #endif
-
-
 
     #if ENABLE_LOADCELL_TASK == true
     xTaskCreate(
