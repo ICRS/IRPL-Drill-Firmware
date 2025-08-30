@@ -38,18 +38,19 @@ Message parseMessage(String input){
     else if (key=="MOTOR"){
         output.type = MessageType::MOTOR;
         output.motorValue = value.toFloat();
-        drillMotor.setVelocity(output.motorValue);
-        linearMotor.setVelocity(output.motorValue);
+        drill_target_velocity = value.toFloat();
+        linear_target_velocity = value.toFloat();
     }
     else if (key=="LINEAR"){
         output.type = MessageType::LINEAR;
         output.linearValue = value.toFloat();
-        linearMotor.setVelocity(output.linearValue);
+        linear_target_velocity = value.toFloat();
     }
     else if (key=="DRILL"){
         output.type = MessageType::DRILL;
         output.drillValue = value.toFloat();
-        drillMotor.setVelocity(output.drillValue);
+        drill_target_velocity = value.toFloat();
+        Serial.printf("DTV:%.2f\n",drill_target_velocity);
     }
     else if (key=="LC"){
         float masses[3];
@@ -93,6 +94,8 @@ void samsCerealTask(void * parameter){
     Serial.begin(BAUD_RATE);
     Message incomingMessage;
 
+    delay(1000);
+
     for(;;){
         String incoming;
         if (Serial.available() > 0){
@@ -106,9 +109,12 @@ void samsCerealTask(void * parameter){
         }
 
         /* Periodic position check. Stop moving down if at the maximum extension */
-        float drill_position = linearMotor.getPosition();
-        if (drill_position >= MAX_EXTENSION) linearMotor.setVelocity(0.0);
+        #if ENABLE_LINEAR_TASK == true
+        float drill_position = linear_encoder.getCount() / 380.0 * 5.0;
+        if (drill_position >= MAX_EXTENSION) linear_target_velocity = 0.0;
         Serial.printf("<POS:%.2f>\n", drill_position);
+        #endif
+
         vTaskDelay(pdMS_TO_TICKS(1000 / SAMS_CEREAL_FREQ));
     }
 }
